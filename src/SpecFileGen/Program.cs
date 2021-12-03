@@ -7,11 +7,7 @@ namespace SpecFileGen
 {
     class Program
     {
-        static readonly string SpecificationsDirectory =
-            Path.GetFullPath(
-                Path.Combine(
-                    Path.GetDirectoryName(typeof(Spec).Assembly.Location),
-                    "../../../../Markdig.Tests/"));
+        static readonly string SpecificationsDirectory = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(typeof(Spec).Assembly.Location), "../../../../Markdig.Tests/"));
 
         enum RendererType
         {

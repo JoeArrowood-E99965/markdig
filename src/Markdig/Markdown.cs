@@ -5,18 +5,20 @@
 using System;
 using System.IO;
 using System.Reflection;
-using Markdig.Extensions.SelfPipeline;
+
+using Markdig.Syntax;
 using Markdig.Helpers;
 using Markdig.Parsers;
 using Markdig.Renderers;
 using Markdig.Renderers.Normalize;
-using Markdig.Syntax;
+using Markdig.Extensions.SelfPipeline;
 
 namespace Markdig
 {
     /// <summary>
     /// Provides methods for parsing a Markdown string to a syntax tree and converting it to other formats.
     /// </summary>
+
     public static partial class Markdown
     {
         public static readonly string Version = ((AssemblyFileVersionAttribute) typeof(Markdown).Assembly.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), false)[0]).Version;

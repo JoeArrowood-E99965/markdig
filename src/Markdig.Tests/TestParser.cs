@@ -79,7 +79,8 @@ namespace Markdig.Tests
         public static void TestSpec(string inputText, string expectedOutputText, MarkdownPipeline pipeline, bool plainText = false)
         {
             // Uncomment this line to get more debug information for process inlines.
-            //pipeline.DebugLog = Console.Out;
+            //pipeline.DebugLog = Console.Out
+
             var result = plainText ? Markdown.ToPlainText(inputText, pipeline) : Markdown.ToHtml(inputText, pipeline);
 
             result = Compact(result);
@@ -169,6 +170,7 @@ namespace Markdig.Tests
         {
             const string RunningInsideVisualStudioPath = "\\src\\.vs\\markdig\\";
             int index = TestsDirectory.IndexOf(RunningInsideVisualStudioPath);
+
             if (index != -1)
             {
                 TestsDirectory = TestsDirectory.Substring(0, index) + "\\src\\Markdig.Tests";
