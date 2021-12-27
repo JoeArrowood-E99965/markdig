@@ -23,6 +23,8 @@ namespace Markdig.Tests
             TestParser.TestSpec("[foo](http://ünicode..com)", "<p><a href=\"http://%C3%BCnicode..com\">foo</a></p>");
         }
 
+        // ------------------------------------------------
+
         [TestCase("link [foo [bar]]")] // https://spec.commonmark.org/0.29/#example-508
         [TestCase("link [foo][bar]")]
         [TestCase("link [][foo][bar][]")]
@@ -62,6 +64,8 @@ namespace Markdig.Tests
             }
         }
 
+        // ------------------------------------------------
+
         [Theory]
         [TestCase('[', 9 * 1024, true, false)]
         [TestCase('[', 11 * 1024, true, true)]
@@ -85,6 +89,8 @@ namespace Markdig.Tests
             }
         }
 
+        // ------------------------------------------------
+
         [Test]
         public void IsIssue356Corrected()
         {
@@ -94,6 +100,8 @@ namespace Markdig.Tests
             TestParser.TestSpec($"<{input}>", expected);
             TestParser.TestSpec(input, expected, "autolinks|advanced");
         }
+
+        // ------------------------------------------------
 
         [Test]
         public void IsIssue365Corrected()
@@ -105,6 +113,8 @@ namespace Markdig.Tests
             TestParser.TestSpec(input, expected);
         }
 
+        // ------------------------------------------------
+
         [Test]
         public void TestAltTextIsCorrectlyEscaped()
         {
@@ -112,6 +122,8 @@ namespace Markdig.Tests
                 @"![This is image alt text with quotation ' and double quotation ""hello"" world](girl.png)",
                 @"<p><img src=""girl.png"" alt=""This is image alt text with quotation ' and double quotation &quot;hello&quot; world"" /></p>");
         }
+
+        // ------------------------------------------------
 
         [Test]
         public void TestChangelogPRLinksMatchDescription()
@@ -129,12 +141,16 @@ namespace Markdig.Tests
             }
         }
 
+        // ------------------------------------------------
+
         [Test]
         public void TestFixHang()
         {
             var input = File.ReadAllText(Path.Combine(TestParser.TestsDirectory, "hang.md"));
             _ = Markdown.ToHtml(input);
         }
+
+        // ------------------------------------------------
 
         [Test]
         public void TestInvalidHtmlEntity()
@@ -143,12 +159,16 @@ namespace Markdig.Tests
             TestParser.TestSpec(input, "<p>9&amp;ddr;&amp;*&amp;ddr;&amp;de��__</p>");
         }
 
+        // ------------------------------------------------
+
         [Test]
         public void TestInvalidCharacterHandling()
         {
             var input = File.ReadAllText(Path.Combine(TestParser.TestsDirectory, "ArgumentOutOfRangeException.md"));
             _ = Markdown.ToHtml(input);
         }
+
+        // ------------------------------------------------
 
         [Test]
         public void TestInvalidCodeEscape()
@@ -157,12 +177,16 @@ namespace Markdig.Tests
             _ = Markdown.ToHtml(input);
         }
 
+        // ------------------------------------------------
+
         [Test]
         public void TestEmphasisAndHtmlEntity()
         {
             var markdownText = "*Unlimited-Fun&#174;*&#174;";
             TestParser.TestSpec(markdownText, "<p><em>Unlimited-Fun®</em>®</p>");
         }
+
+        // ------------------------------------------------
 
         [Test]
         public void TestThematicInsideCodeBlockInsideList()
@@ -182,6 +206,8 @@ namespace Markdig.Tests
 </code></pre></li>
 </ol>");
         }
+
+        // ------------------------------------------------
 
         [Test]
         public void VisualizeMathExpressions()
@@ -215,6 +241,8 @@ $$
             Console.WriteLine(html);
         }
 
+        // ------------------------------------------------
+
         [Test]
         public void InlineMathExpression()
         {
@@ -230,6 +258,8 @@ $\frac{n!}{k!(n-k)!} = \binom{n}{k}$
             Assert.IsTrue(html.Contains("<p><span class=\"math\">\\("), "Leading bracket missing");
             Assert.IsTrue(html.Contains("\\)</span></p>"), "Trailing bracket missing");
         }
+
+        // ------------------------------------------------
 
         [Test]
         public void BlockMathExpression()
@@ -249,6 +279,8 @@ $$
             Assert.IsTrue(html.Contains("\\]</div>"), "Trailing bracket missing");
         }
 
+        // ------------------------------------------------
+
         [Test]
         public void CanDisableParsingHeadings()
         {
@@ -265,6 +297,8 @@ $$
             TestParser.TestSpec("[Foo]\n\n[Foo]: bar", "<p><a href=\"bar\">Foo</a></p>", noHeadingsPipeline);
         }
 
+        // ------------------------------------------------
+
         [Test]
         public void CanOpenAutoLinksInNewWindow()
         {
@@ -274,6 +308,8 @@ $$
             TestParser.TestSpec("www.foo.bar", "<p><a href=\"http://www.foo.bar\">www.foo.bar</a></p>", pipeline);
             TestParser.TestSpec("www.foo.bar", "<p><a href=\"http://www.foo.bar\" target=\"_blank\">www.foo.bar</a></p>", newWindowPipeline);
         }
+
+        // ------------------------------------------------
 
         [Test]
         public void CanUseHttpsPrefixForWWWAutoLinks()

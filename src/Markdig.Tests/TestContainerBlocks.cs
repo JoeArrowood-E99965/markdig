@@ -15,6 +15,8 @@ namespace Markdig.Tests
             }
         }
 
+        // ------------------------------------------------
+
         [Test]
         public void CanBeCleared()
         {
@@ -37,6 +39,8 @@ namespace Markdig.Tests
             Assert.Null(container.LastChild);
             Assert.Null(paragraph.Parent);
         }
+
+        // ------------------------------------------------
 
         [Test]
         public void CanBeInsertedInto()
@@ -69,6 +73,8 @@ namespace Markdig.Tests
             Assert.Throws<ArgumentOutOfRangeException>(() => container.Insert(-1, new ParagraphBlock()));
             Assert.Throws<ArgumentException>(() => container.Insert(0, one)); // one already has a parent
         }
+
+        // ------------------------------------------------
 
         [Test]
         public void CanBeSet()

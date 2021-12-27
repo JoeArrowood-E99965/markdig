@@ -20,6 +20,7 @@ namespace Markdig.Tests.RoundtripSpecs.Inlines
 
         // this method is copied intentionally to ensure all other tests
         // do not unintentionally use the expected parameter
+
         private static void RoundTrip(string markdown, string expected)
         {
             var pipelineBuilder = new MarkdownPipelineBuilder();

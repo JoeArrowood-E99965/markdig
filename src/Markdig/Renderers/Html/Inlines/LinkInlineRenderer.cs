@@ -16,6 +16,7 @@ namespace Markdig.Renderers.Html.Inlines
         /// <summary>
         /// Gets or sets a value indicating whether to always add rel="nofollow" for links or not.
         /// </summary>
+
         [Obsolete("AutoRelNoFollow is obsolete. Please write \"nofollow\" into Property Rel.")]
         public bool AutoRelNoFollow
         {
@@ -26,6 +27,7 @@ namespace Markdig.Renderers.Html.Inlines
             set
             {
                 string rel = "nofollow";
+
                 if (value && !Rel.Contains(rel))
                 {
                     Rel = string.IsNullOrEmpty(Rel) ? rel : Rel + $" {rel}";

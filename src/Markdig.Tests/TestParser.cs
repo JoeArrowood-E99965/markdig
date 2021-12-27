@@ -1,15 +1,17 @@
 // Copyright (c) Alexandre Mutel. All rights reserved.
 // This file is licensed under the BSD-Clause 2 license.
 // See the license.txt file in the project root for more information.
+
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Markdig.Extensions.JiraLinks;
+
 using Markdig.Syntax;
 using NUnit.Framework;
+using Markdig.Extensions.JiraLinks;
 
 namespace Markdig.Tests
 {
@@ -18,9 +20,10 @@ namespace Markdig.Tests
         [Test]
         public void EnsureSpecsAreUpToDate()
         {
+            // ---------------------------------------
             // In CI, SpecFileGen is guaranteed to run
-            if (IsContinuousIntegration)
-                return;
+
+            if(IsContinuousIntegration) { return; }
 
             var specsFilePaths = Directory.GetDirectories(TestsDirectory)
                 .Where(dir => dir.EndsWith("Specs"))
@@ -54,11 +57,13 @@ namespace Markdig.Tests
 
                 // If file creation times aren't preserved by git, add some leeway
                 // If specs have come from git, assume that they were regenerated since CI would fail otherwise
+
                 testTime = testTime.AddMinutes(3);
 
                 // This might not catch a changed spec every time, but should at least sometimes. Otherwise CI will catch it
 
                 // This could also trigger, if a user has modified the spec file but reverted the change - can't think of a good workaround
+
                 Assert.Less(specTime, testTime,
                     $"{Path.GetFileName(specFilePath)} has been modified. Run SpecFileGen to regenerate the tests. " +
                     "If you have modified a specification file, but reverted all changes, ignore this error or revert the 'changed' timestamp metadata on the file.");
@@ -66,6 +71,8 @@ namespace Markdig.Tests
 
             TestDescendantsOrder.TestSchemas(specsSyntaxTrees);
         }
+
+        // ------------------------------------------------
 
         public static void TestSpec(string inputText, string expectedOutputText, string extensions = null, bool plainText = false)
         {
@@ -75,6 +82,8 @@ namespace Markdig.Tests
                 TestSpec(inputText, expectedOutputText, pipeline.Value, plainText);
             }
         }
+
+        // ------------------------------------------------
 
         public static void TestSpec(string inputText, string expectedOutputText, MarkdownPipeline pipeline, bool plainText = false)
         {
@@ -89,6 +98,8 @@ namespace Markdig.Tests
             PrintAssertExpected(inputText, result, expectedOutputText);
         }
 
+        // ------------------------------------------------
+
         public static void PrintAssertExpected(string source, string result, string expected)
         {
             Console.WriteLine("```````````````````Source");
@@ -101,6 +112,8 @@ namespace Markdig.Tests
             Console.WriteLine();
             TextAssert.AreEqual(expected, result);
         }
+
+        // ------------------------------------------------
 
         public static IEnumerable<KeyValuePair<string, MarkdownPipeline>> GetPipeline(string extensionsGroupText)
         {
@@ -130,10 +143,12 @@ namespace Markdig.Tests
             }
 
             var extensionGroups = extensionsGroupText.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
             foreach (var extensionsText in extensionGroups)
             {
                 var builder = new MarkdownPipelineBuilder();
                 builder.DebugLog = Console.Out;
+
                 if (extensionsText == "jiralinks")
                 {
                     builder.UseJiraLinks(new JiraLinkOptions("http://your.company.abc"));
@@ -142,15 +157,20 @@ namespace Markdig.Tests
                 {
                     builder = extensionsText == "self" ? builder.UseSelfPipeline() : builder.Configure(extensionsText);
                 }
+
                 yield return new KeyValuePair<string, MarkdownPipeline>(extensionsText, builder.Build());
             }
         }
+
+        // ------------------------------------------------
 
         public static string DisplaySpaceAndTabs(string text)
         {
             // Output special characters to check correctly the results
             return text.Replace('\t', '→').Replace(' ', '·');
         }
+
+        // ------------------------------------------------
 
         private static string Compact(string html)
         {
@@ -162,9 +182,15 @@ namespace Markdig.Tests
             return html;
         }
 
+        // ------------------------------------------------
+
         public static readonly bool IsContinuousIntegration = Environment.GetEnvironmentVariable("CI") != null;
 
+        // ------------------------------------------------
+
         public static readonly string TestsDirectory = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(typeof(TestParser).Assembly.Location), "../../.."));
+
+        // ------------------------------------------------
 
         static TestParser()
         {

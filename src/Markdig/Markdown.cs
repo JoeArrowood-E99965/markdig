@@ -26,6 +26,8 @@ namespace Markdig
         internal static readonly MarkdownPipeline DefaultPipeline = new MarkdownPipelineBuilder().Build();
         private static readonly MarkdownPipeline _defaultTrackTriviaPipeline = new MarkdownPipelineBuilder().EnableTrackTrivia().Build();
 
+        /// -----------------------------------------------
+
         private static MarkdownPipeline GetPipeline(MarkdownPipeline? pipeline, string markdown)
         {
             if (pipeline is null)
@@ -41,15 +43,17 @@ namespace Markdig
             return pipeline;
         }
 
-
+        /// -----------------------------------------------
         /// <summary>
-        /// Normalizes the specified markdown to a normalized markdown text.
+        ///     Normalizes the specified markdown to a
+        ///     normalized markdown text.
         /// </summary>
         /// <param name="markdown">The markdown.</param>
         /// <param name="options">The normalize options</param>
         /// <param name="pipeline">The pipeline.</param>
         /// <param name="context">A parser context used for the parsing.</param>
         /// <returns>A normalized markdown text.</returns>
+
         public static string Normalize(string markdown, NormalizeOptions? options = null, MarkdownPipeline? pipeline = null, MarkdownParserContext? context = null)
         {
             var writer = new StringWriter();
@@ -57,8 +61,10 @@ namespace Markdig
             return writer.ToString();
         }
 
+        /// -----------------------------------------------
         /// <summary>
-        /// Normalizes the specified markdown to a normalized markdown text.
+        ///     Normalizes the specified markdown to a
+        ///     normalized markdown text.
         /// </summary>
         /// <param name="markdown">The markdown.</param>
         /// <param name="writer">The destination <see cref="TextWriter"/> that will receive the result of the conversion.</param>
@@ -66,6 +72,7 @@ namespace Markdig
         /// <param name="pipeline">The pipeline.</param>
         /// <param name="context">A parser context used for the parsing.</param>
         /// <returns>A normalized markdown text.</returns>
+
         public static MarkdownDocument Normalize(string markdown, TextWriter writer, NormalizeOptions? options = null, MarkdownPipeline? pipeline = null, MarkdownParserContext? context = null)
         {
             if (markdown is null) ThrowHelper.ArgumentNullException_markdown();
@@ -83,14 +90,16 @@ namespace Markdig
             return document;
         }
 
+        /// -----------------------------------------------
         /// <summary>
-        /// Converts a Markdown string to HTML.
+        ///     Converts a Markdown string to HTML.
         /// </summary>
         /// <param name="markdown">A Markdown text.</param>
         /// <param name="pipeline">The pipeline used for the conversion.</param>
         /// <param name="context">A parser context used for the parsing.</param>
         /// <returns>The result of the conversion</returns>
         /// <exception cref="ArgumentNullException">if markdown variable is null</exception>
+
         public static string ToHtml(string markdown, MarkdownPipeline? pipeline = null, MarkdownParserContext? context = null)
         {
             if (markdown is null) ThrowHelper.ArgumentNullException_markdown();
@@ -102,13 +111,15 @@ namespace Markdig
             return ToHtml(document, pipeline);
         }
 
+        /// ------------------------------------------------
         /// <summary>
-        /// Converts a Markdown document to HTML.
+        ///     Converts a Markdown document to HTML.
         /// </summary>
         /// <param name="document">A Markdown document.</param>
         /// <param name="pipeline">The pipeline used for the conversion.</param>
         /// <returns>The result of the conversion</returns>
         /// <exception cref="ArgumentNullException">if markdown document variable is null</exception>
+
         public static string ToHtml(this MarkdownDocument document, MarkdownPipeline? pipeline = null)
         {
             if (document is null) ThrowHelper.ArgumentNullException(nameof(document));
@@ -124,8 +135,9 @@ namespace Markdig
             return renderer.Writer.ToString() ?? string.Empty;
         }
 
+        /// -----------------------------------------------
         /// <summary>
-        /// Converts a Markdown string to HTML and output to the specified writer.
+        ///     Converts a Markdown string to HTML and output to the specified writer.
         /// </summary>
         /// <param name="markdown">A Markdown text.</param>
         /// <param name="writer">The destination <see cref="TextWriter"/> that will receive the result of the conversion.</param>
@@ -133,6 +145,7 @@ namespace Markdig
         /// <param name="context">A parser context used for the parsing.</param>
         /// <returns>The Markdown document that has been parsed</returns>
         /// <exception cref="ArgumentNullException">if reader or writer variable are null</exception>
+
         public static MarkdownDocument ToHtml(string markdown, TextWriter writer, MarkdownPipeline? pipeline = null, MarkdownParserContext? context = null)
         {
             if (markdown is null) ThrowHelper.ArgumentNullException_markdown();
@@ -151,14 +164,17 @@ namespace Markdig
             return document;
         }
 
+        /// -----------------------------------------------
         /// <summary>
-        /// Converts a Markdown string using a custom <see cref="IMarkdownRenderer"/>.
+        ///     Converts a Markdown string using a custom
+        ///     <see cref="IMarkdownRenderer"/>.
         /// </summary>
         /// <param name="markdown">A Markdown text.</param>
         /// <param name="renderer">The renderer to convert Markdown to.</param>
         /// <param name="pipeline">The pipeline used for the conversion.</param>
         /// <param name="context">A parser context used for the parsing.</param>
         /// <exception cref="ArgumentNullException">if markdown or writer variable are null</exception>
+
         public static object Convert(string markdown, IMarkdownRenderer renderer, MarkdownPipeline? pipeline = null, MarkdownParserContext? context = null)
         {
             if (markdown is null) ThrowHelper.ArgumentNullException_markdown();
@@ -169,16 +185,20 @@ namespace Markdig
             var document = MarkdownParser.Parse(markdown, pipeline, context);
 
             pipeline.Setup(renderer);
+
             return renderer.Render(document);
         }
 
+        /// -----------------------------------------------
         /// <summary>
-        /// Parses the specified markdown into an AST <see cref="MarkdownDocument"/>
+        ///     Parses the specified markdown into an AST
+        ///     <see cref="MarkdownDocument"/>
         /// </summary>
         /// <param name="markdown">The markdown text.</param>
         /// <param name="trackTrivia">Whether to parse trivia such as whitespace, extra heading characters and unescaped string values.</param>
         /// <returns>An AST Markdown document</returns>
         /// <exception cref="ArgumentNullException">if markdown variable is null</exception>
+
         public static MarkdownDocument Parse(string markdown, bool trackTrivia = false)
         {
             if (markdown is null) ThrowHelper.ArgumentNullException_markdown();
@@ -188,14 +208,17 @@ namespace Markdig
             return Parse(markdown, pipeline);
         }
 
+        /// -----------------------------------------------
         /// <summary>
-        /// Parses the specified markdown into an AST <see cref="MarkdownDocument"/>
+        ///     Parses the specified markdown into an AST
+        ///     <see cref="MarkdownDocument"/>
         /// </summary>
         /// <param name="markdown">The markdown text.</param>
         /// <param name="pipeline">The pipeline used for the parsing.</param>
         /// <param name="context">A parser context used for the parsing.</param>
         /// <returns>An AST Markdown document</returns>
         /// <exception cref="ArgumentNullException">if markdown variable is null</exception>
+
         public static MarkdownDocument Parse(string markdown, MarkdownPipeline? pipeline, MarkdownParserContext? context = null)
         {
             if (markdown is null) ThrowHelper.ArgumentNullException_markdown();
@@ -205,8 +228,10 @@ namespace Markdig
             return MarkdownParser.Parse(markdown, pipeline, context);
         }
 
+        /// -----------------------------------------------
         /// <summary>
-        /// Converts a Markdown string to Plain text and output to the specified writer.
+        ///     Converts a Markdown string to Plain text and
+        ///     output to the specified writer.
         /// </summary>
         /// <param name="markdown">A Markdown text.</param>
         /// <param name="writer">The destination <see cref="TextWriter"/> that will receive the result of the conversion.</param>
@@ -214,6 +239,7 @@ namespace Markdig
         /// <param name="context">A parser context used for the parsing.</param>
         /// <returns>The Markdown document that has been parsed</returns>
         /// <exception cref="ArgumentNullException">if reader or writer variable are null</exception>
+
         public static MarkdownDocument ToPlainText(string markdown, TextWriter writer, MarkdownPipeline? pipeline = null, MarkdownParserContext? context = null)
         {
             if (markdown is null) ThrowHelper.ArgumentNullException_markdown();
@@ -224,6 +250,7 @@ namespace Markdig
             var document = MarkdownParser.Parse(markdown, pipeline, context);
 
             // We override the renderer with our own writer
+
             var renderer = new HtmlRenderer(writer)
             {
                 EnableHtmlForBlock = false,
@@ -238,14 +265,16 @@ namespace Markdig
             return document;
         }
 
+        /// -----------------------------------------------
         /// <summary>
-        /// Converts a Markdown string to HTML.
+        ///     Converts a Markdown string to HTML.
         /// </summary>
         /// <param name="markdown">A Markdown text.</param>
         /// <param name="pipeline">The pipeline used for the conversion.</param>
         /// <param name="context">A parser context used for the parsing.</param>
         /// <returns>The result of the conversion</returns>
         /// <exception cref="ArgumentNullException">if markdown variable is null</exception>
+
         public static string ToPlainText(string markdown, MarkdownPipeline? pipeline = null, MarkdownParserContext? context = null)
         {
             if (markdown is null) ThrowHelper.ArgumentNullException_markdown();

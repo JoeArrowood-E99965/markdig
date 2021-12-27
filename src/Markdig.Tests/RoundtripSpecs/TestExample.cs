@@ -24,7 +24,7 @@ resulting output file.
 >look, ma:
 > my space is not normalized!
 ";
-            MarkdownDocument markdownDocument = Markdown.Parse(markdown, trackTrivia: true);
+            var markdownDocument = Markdown.Parse(markdown, trackTrivia: true);
             var listBlock = markdownDocument[2] as ListBlock;
             var listItem = listBlock[0] as ListItemBlock;
             var paragraph = listItem[0] as ParagraphBlock;
