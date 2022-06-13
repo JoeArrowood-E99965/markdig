@@ -356,12 +356,16 @@ asdf
                                   "# Hello World\n\nFoobar is a better bar.");
         }
 
+        // ------------------------------------------------
+
         [Test]
         public void SpaceBetweenNodesEvenForHeadlines()
         {
             AssertNormalizeNoTrim("# Hello World\n## Chapter 1\nFoobar is a better bar.",
                                   "# Hello World\n\n## Chapter 1\n\nFoobar is a better bar.");
         }
+
+        // ------------------------------------------------
 
         [Test]
         public void SpaceRemoveAtStartAndEnd()
@@ -370,12 +374,16 @@ asdf
                                   "# Hello World\n\n## Chapter 1\n\nFoobar is a better bar.");
         }
 
+        // ------------------------------------------------
+
         [Test]
         public void SpaceShortenBetweenNodes()
         {
             AssertNormalizeNoTrim("# Hello World\n\n\n\nFoobar is a better bar.",
                                   "# Hello World\n\nFoobar is a better bar.");
         }
+
+        // ------------------------------------------------
 
         [Test]
         public void BiggerSample()
@@ -407,8 +415,7 @@ This is a last line";
         public void TaskLists()
         {
             AssertNormalizeNoTrim("- [X] This is done");
-            AssertNormalizeNoTrim("- [x] This is done",
-                                  "- [X] This is done");
+            AssertNormalizeNoTrim("- [x] This is done", "- [X] This is done");
             AssertNormalizeNoTrim("- [ ] This is not done");
 
             // ignore
@@ -425,24 +432,30 @@ This is a last line";
             AssertNormalizeNoTrim("**Hello World AB-1**");
         }
 
-        [Test]
-        public void AutoLinks()
-        {
-            AssertNormalizeNoTrim("Hello from http://example.com/foo", "Hello from [http://example.com/foo](http://example.com/foo)", new NormalizeOptions() { ExpandAutoLinks = true, });
-            AssertNormalizeNoTrim("Hello from www.example.com/foo", "Hello from [www.example.com/foo](http://www.example.com/foo)", new NormalizeOptions() { ExpandAutoLinks = true, });
-            AssertNormalizeNoTrim("Hello from ftp://example.com", "Hello from [ftp://example.com](ftp://example.com)", new NormalizeOptions() { ExpandAutoLinks = true, });
-            AssertNormalizeNoTrim("Hello from mailto:hello@example.com", "Hello from [hello@example.com](mailto:hello@example.com)", new NormalizeOptions() { ExpandAutoLinks = true, });
+        // ------------------------------------------------
 
-            AssertNormalizeNoTrim("Hello from http://example.com/foo", "Hello from http://example.com/foo", new NormalizeOptions() { ExpandAutoLinks = false, });
-            AssertNormalizeNoTrim("Hello from www.example.com/foo", "Hello from http://www.example.com/foo", new NormalizeOptions() { ExpandAutoLinks = false, });
-            AssertNormalizeNoTrim("Hello from mailto:hello@example.com", "Hello from mailto:hello@example.com", new NormalizeOptions() { ExpandAutoLinks = false, });
+        [Test]
+        [TestCase("Hello from http://example.com/foo", "Hello from http://example.com/foo", false)]
+        [TestCase("Hello from www.example.com/foo", "Hello from http://www.example.com/foo", false)]
+        [TestCase("Hello from mailto:hello@example.com", "Hello from mailto:hello@example.com", false)]
+
+        [TestCase("Hello from ftp://example.com", "Hello from [ftp://example.com](ftp://example.com)", true)]
+        [TestCase("Hello from www.example.com/foo", "Hello from [www.example.com/foo](http://www.example.com/foo)", true)]
+        [TestCase("Hello from mailto:hello@example.com", "Hello from [hello@example.com](mailto:hello@example.com)", true)]
+        [TestCase("Hello from http://example.com/foo", "Hello from [http://example.com/foo](http://example.com/foo)", true)]
+        public void AutoLinks(string input, string expected, bool expand)
+        {
+            AssertNormalizeNoTrim(input, expected, new NormalizeOptions() { ExpandAutoLinks = expand, });
         }
+
+        // ------------------------------------------------
 
         private static void AssertSyntax(string expected, MarkdownObject syntax)
         {
             var writer = new StringWriter();
             var normalizer = new NormalizeRenderer(writer);
             var document = new MarkdownDocument();
+
             if (syntax is Block)
             {
                 document.Add(syntax as Block);
@@ -466,8 +479,12 @@ This is a last line";
             }
         }
 
+        // ------------------------------------------------
+
         public static void AssertNormalizeNoTrim(string input, string expected = null, NormalizeOptions options = null)
             => AssertNormalize(input, expected, false, options);
+
+        // ------------------------------------------------
 
         public static void AssertNormalize(string input, string expected = null, bool trim = true, NormalizeOptions options = null, MarkdownPipeline pipeline = null)
         {
@@ -487,12 +504,15 @@ This is a last line";
             TestParser.PrintAssertExpected(input, result, expected);
         }
 
+        // ------------------------------------------------
+
         private static string NormText(string text, bool trim)
         {
             if (trim)
             {
                 text = text.Trim();
             }
+
             return text.Replace("\r\n", "\n").Replace('\r', '\n');
         }
     }
